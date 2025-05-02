@@ -54,7 +54,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get('/', (req, res) => {
   res.send('API ishlayapti!');
 });
-const serverUrl = 'https://library-project-6agw.onrender.com';
+const serverUrl = 'https://library-1dmu.onrender.com';
 swaggerDocument.servers = [
   { url: serverUrl, description: 'Current Server' }
 ];
