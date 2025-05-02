@@ -1,0 +1,148 @@
+{
+  message: '{\n' +
+    '    "method": "GET",\n' +
+    '    "url": "/get_all_books",\n' +
+    '    "status": 404,\n' +
+    '    "duration": "24ms",\n' +
+    '    "requestBody": {\n' +
+    '        "username": "Botirbek",\n' +
+    '        "password": "12345!Gn"\n' +
+    '    },\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "access-control-allow-origin": "*",\n' +
+    `        "content-security-policy": "default-src 'none'",\n` +
+    '        "x-content-type-options": "nosniff",\n' +
+    '        "content-type": "text/html; charset=utf-8",\n' +
+    '        "content-length": 152\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-02 13:40:26'
+}
+{
+  message: '{\n' +
+    '    "method": "GET",\n' +
+    '    "url": "/get_books",\n' +
+    '    "status": 200,\n' +
+    '    "duration": "347ms",\n' +
+    '    "requestBody": {\n' +
+    '        "username": "Botirbek",\n' +
+    '        "password": "12345!Gn"\n' +
+    '    },\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "access-control-allow-origin": "*",\n' +
+    '        "content-type": "application/json; charset=utf-8",\n' +
+    '        "content-length": "8631",\n' +
+    '        "etag": "W/\\"21b7-1moXLuQdHkPhKR1IY34WXA85/b4\\""\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-02 13:40:49'
+}
+{
+  message: '{\n' +
+    '    "method": "GET",\n' +
+    '    "url": "/upload/book/678b960e9343b32ed1b09faf",\n' +
+    '    "status": 404,\n' +
+    '    "duration": "3ms",\n' +
+    '    "requestBody": {},\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "access-control-allow-origin": "*",\n' +
+    `        "content-security-policy": "default-src 'none'",\n` +
+    '        "x-content-type-options": "nosniff",\n' +
+    '        "content-type": "text/html; charset=utf-8",\n' +
+    '        "content-length": 175\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-02 13:41:04'
+}
+{
+  message: '{\n' +
+    '    "method": "POST",\n' +
+    '    "url": "/upload/book/678b960e9343b32ed1b09faf",\n' +
+    '    "status": 401,\n' +
+    '    "duration": "2ms",\n' +
+    '    "requestBody": {},\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "access-control-allow-origin": "*",\n' +
+    '        "content-type": "application/json; charset=utf-8",\n' +
+    '        "content-length": "27",\n' +
+    '        "etag": "W/\\"1b-ptDm3ggC53pgcLgMnSH4sPfBUYY\\""\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-02 13:41:08'
+}
+{
+  message: 'shuhratkarimov.dev@gmail.com email egasi login qilishga urindi!',
+  level: 'info',
+  timestamp: '2025-05-02 13:41:26'
+}
+{
+  message: 'shuhrat tizimga kirdi!',
+  level: 'info',
+  timestamp: '2025-05-02 13:41:27'
+}
+{
+  message: '{\n' +
+    '    "method": "POST",\n' +
+    '    "url": "/login",\n' +
+    '    "status": 200,\n' +
+    '    "duration": "814ms",\n' +
+    '    "requestBody": {\n' +
+    '        "email": "shuhratkarimov.dev@gmail.com",\n' +
+    '        "password": "11111"\n' +
+    '    },\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "access-control-allow-origin": "*",\n' +
+    '        "set-cookie": "accesstoken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNodWhyYXQiLCJlbWFpbCI6InNodWhyYXRrYXJpbW92LmRldkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NDYxNzUyODcsImV4cCI6MTc0NjE3NjE4N30.bxA_2HSTD3adDRuTj2_d3mi6fA5P5QRPo3NFBc9vacQ; Max-Age=900; Path=/; Expires=Fri, 02 May 2025 08:56:27 GMT; HttpOnly",\n' +
+    '        "content-type": "application/json; charset=utf-8",\n' +
+    '        "content-length": "307",\n' +
+    '        "etag": "W/\\"133-1xdPDRI4EZUz9GOt7zUidQ8BAMA\\""\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-02 13:41:27'
+}
+{
+  message: '{\n' +
+    '    "method": "POST",\n' +
+    '    "url": "/upload/book/678b960e9343b32ed1b09faf",\n' +
+    '    "status": 500,\n' +
+    '    "duration": "1991ms",\n' +
+    '    "requestBody": {},\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "access-control-allow-origin": "*",\n' +
+    '        "content-type": "application/json; charset=utf-8",\n' +
+    '        "content-length": "75",\n' +
+    '        "etag": "W/\\"4b-Hl3W8edWvAGqrtSDnnoSh35KPgE\\""\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-02 13:41:41'
+}
+{
+  message: '{\n' +
+    '    "method": "POST",\n' +
+    '    "url": "/upload/book/678b960e9343b32ed1b09faf",\n' +
+    '    "status": 201,\n' +
+    '    "duration": "2006ms",\n' +
+    '    "requestBody": {},\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "access-control-allow-origin": "*",\n' +
+    '        "content-type": "application/json; charset=utf-8",\n' +
+    '        "content-length": "140",\n' +
+    '        "etag": "W/\\"8c-D2zPlE12XZrQbp1jWmgBnVvMVBo\\""\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-02 13:44:50'
+}
