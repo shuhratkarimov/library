@@ -14,9 +14,9 @@ jobs:
 
       - name: Set up SSH
         run: |
-          echo "${{ secrets.VPS_KEY }}" > key.pem
+          echo "${{ secrets.SSH_KEY }}" > key.pem
           chmod 600 key.pem
 
       - name: Test SSH connection
         run: |
-          ssh -i key.pem -o StrictHostKeyChecking=no root@${{ secrets.VPS_HOST }} "echo ✅ Connected"
+          ssh -i key.pem -o StrictHostKeyChecking=no root@${{ secrets.SSH_HOST }} "echo ✅ Connected"
