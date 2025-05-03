@@ -3,20 +3,32 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main
+      - main  # yoki master
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repo
+      uses: actions/checkout@v3
 
-      - name: Set up SSH
-        run: |
-          echo "${{ secrets.SSH_KEY }}" > key.pem
-          chmod 600 key.pem
+    - name: Copy files to VPS with rsync
+      uses: burnett01/rsync-deployments@5.2
+      with:
+        switches: -avzr --delete
+        path: .
+        remote_path: /home/express/app
+        remote_host: ${{ secrets.SSH_HOST }}
+        remote_user: ${{ secrets.SSH_USER }}
+        remote_key: ${{ secrets.SSH_SSH_KEY }}
 
-      - name: Test SSH connection
-        run: |
-          ssh -i key.pem -o StrictHostKeyChecking=no root@${{ secrets.SSH_HOST }} "echo ✅ Connected"
+    - name: Build and restart Docker container
+      run: |
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        cd /home/express/app
+        docker stop my-express-app || true
+        docker rm my-express-app || true
+        docker build -t my-express-app .
+        docker run -d -p 4000:4000 --env-file .env --name my-express-app my-express-app
+        EOF
