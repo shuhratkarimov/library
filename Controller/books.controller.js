@@ -76,6 +76,7 @@ async function addBook(req, res, next) {
     await newBook.save();
     res.status(201).json({
       message: "Yangi kitob ro'yxatga muvaffaqiyatli qo'shildi!",
+      newBook: newBook
     });
   } catch (error) {
     next(error);

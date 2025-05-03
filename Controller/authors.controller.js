@@ -66,6 +66,7 @@ async function addAuthor(req, res, next) {
     await author.save();
     res.status(201).json({
       message: "Yangi adib ro'yxatga muvaffaqiyatli qo'shildi!",
+      newAuthor: author
     });
   } catch (error) {
     next(error);
