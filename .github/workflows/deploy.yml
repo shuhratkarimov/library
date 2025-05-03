@@ -1,53 +1,34 @@
-name: Deploy Library Backend
+name: Deploy to VPS
+
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main  # yoki master
 
 jobs:
   deploy:
     runs-on: self-hosted
+
     steps:
-    - name: Checkout code
+    - name: Checkout repo
       uses: actions/checkout@v3
 
-    - name: Install dependencies & restart app
+    - name: Copy files to VPS with rsync
+      uses: burnett01/rsync-deployments@5.2
+      with:
+        switches: -avzr --delete
+        path: .
+        remote_path: /home/express/app
+        remote_host: ${{ secrets.VPS_HOST }}
+        remote_user: ${{ secrets.VPS_USER }}
+        remote_key: ${{ secrets.VPS_SSH_KEY }}
+
+    - name: Build and restart Docker container
       run: |
-        echo "🚀 Deployment started at $(date)"
-        
-        # Debug info
-        echo "=== SYSTEM INFO ==="
-        node -v
-        npm -v
-        pm2 -v
-        echo "=================="
-        
-        # Project directory
-        TARGET_DIR="/home/githubrunner/actions-runner/_work/library_project/library_project"
-        echo "Target directory: $TARGET_DIR"
-        
-        if [ ! -d "$TARGET_DIR" ]; then
-          echo "❌ Papka topilmadi: $TARGET_DIR"
-          exit 1
-        fi
-        
-        cd "$TARGET_DIR" || exit 1
-        
-        # Cleanup
-        echo "🧹 Eski fayllarni tozalash..."
-        sudo rm -rf node_modules package-lock.json .npmrc
-        
-        # Install with debug
-        echo "📦 Paketlarni o'rnatish..."
-        npm install --loglevel verbose --unsafe-perm 2>&1 | tee npm-debug.log
-        
-        # PM2 process
-        echo "🔄 PM2 ni qayta ishga tushirish..."
-        pm2 delete library || true
-        pm2 start index.js --name library
-        
-        echo "✅ Deployment finished at $(date)"
-        
-        # Debug log
-        echo "=== INSTALLATION LOG ==="
-        cat npm-debug.log | tail -n 20
-        echo "======================="
+        ssh -i ~/.ssh/id_rsa ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+        cd /home/express/app
+        docker stop my-express-app || true
+        docker rm my-express-app || true
+        docker build -t my-express-app .
+        docker run -d -p 4000:4000 --env-file .env --name my-express-app my-express-app
+        EOF
