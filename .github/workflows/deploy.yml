@@ -3,32 +3,26 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main  # yoki master
+      - main
 
 jobs:
   deploy:
-    runs-on: self-hosted
-
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Copy files to VPS with rsync
-      uses: burnett01/rsync-deployments@5.2
-      with:
-        switches: -avzr --delete
-        path: .
-        remote_path: /home/express/app
-        remote_host: ${{ secrets.SSH_HOST }}
-        remote_user: ${{ secrets.SSH_USER }}
-        remote_key: ${{ secrets.SSH_SSH_KEY }}
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Build and restart Docker container
-      run: |
-        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-        cd /home/express/app
-        docker stop my-express-app || true
-        docker rm my-express-app || true
-        docker build -t my-express-app .
-        docker run -d -p 4000:4000 --env-file .env --name my-express-app my-express-app
-        EOF
+      - name: Deploy to VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd /home/root/express03
+            git pull origin main
+            # Build and restart your app (add your own commands)
+            docker-compose down
+            docker-compose up -d
+          EOF
