@@ -2,29 +2,18 @@ name: Deploy Library Backend
 on:
   push:
     branches: [ main ]
+
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    - name: Deploy to VPS
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_USER: ${{ secrets.SSH_USER }}
+
+    - name: Install dependencies & restart app
       run: |
-        echo "$SSH_PRIVATE_KEY" > ssh_key
-        chmod 600 ssh_key
-        ssh -o StrictHostKeyChecking=no -i ssh_key $SSH_USER@$SSH_HOST << 'EOF'
-          echo "Starting deployment at $(date)"
-          cd /home/githubrunner/actions-runner/_work/library_project/library_project  # To‘g‘ri yo‘l
-          echo "Pulling code at $(date)"
-          git pull origin main
-          echo "Installing dependencies at $(date)"
-          npm install
-          echo "Restarting PM2 at $(date)"
-          pm2 restart library
-          echo "Deployment finished at $(date)"
-        EOF
-        rm ssh_key
+        echo "🚀 Deployment started at $(date)"
+        cd /home/githubrunner/actions-runner/_work/library_project/library_project
+        npm install
+        pm2 restart library || pm2 start index.js --name library
+        echo "✅ Deployment finished at $(date)"
