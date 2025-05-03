@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: API for user authentication, managing books, authors and members of the library.
 servers:
-  - url: https://library-1dmu.onrender.com
+  - url: https://library.shuhratkarimov.uz
     description: Production server
 tags:
   - name: Authentication
