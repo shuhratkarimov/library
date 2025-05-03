@@ -3,25 +3,20 @@ name: Deploy to VPS
 on:
   push:
     branches:
-      - main  # yoki master
-  workflow_dispatch:
+      - main
 
 jobs:
   deploy:
-    runs-on: self-hosted
-
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Copy project to VPS via rsync
-      run: |
-        rsync -avz -e "ssh -o StrictHostKeyChecking=no" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/library
+      - name: Set up SSH
+        run: |
+          echo "${{ secrets.VPS_KEY }}" > key.pem
+          chmod 600 key.pem
 
-    - name: Restart Docker container on SSH
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-          cd /home/${{ secrets.SSH_USER }}/library
-          docker compose down
-          docker compose up -d --build
-        EOF
+      - name: Test SSH connection
+        run: |
+          ssh -i key.pem -o StrictHostKeyChecking=no root@${{ secrets.VPS_HOST }} "echo ✅ Connected"
