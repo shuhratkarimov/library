@@ -14,6 +14,15 @@ jobs:
       run: |
         echo "🚀 Deployment started at $(date)"
         cd /home/githubrunner/actions-runner/_work/library_project/library_project
-        npm install
+        
+        # Fix permissions and clean existing modules
+        sudo chown -R $USER:$USER .
+        rm -rf node_modules
+        
+        # Install with unsafe permissions flag
+        npm install --unsafe-perm
+        
+        # Restart PM2 process
         pm2 restart library || pm2 start index.js --name library
+        
         echo "✅ Deployment finished at $(date)"
