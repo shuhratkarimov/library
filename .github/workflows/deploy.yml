@@ -18,7 +18,7 @@ jobs:
         chmod 600 ssh_key
         ssh -o StrictHostKeyChecking=no -i ssh_key $SSH_USER@$SSH_HOST << 'EOF'
           echo "Starting deployment at $(date)"
-          cd /home/actionsuser/library_project/_work/library/library  # To‘g‘ri yo‘l
+          cd /home/githubrunner/actions-runner/_work/library_project/library_project  # To‘g‘ri yo‘l
           echo "Pulling code at $(date)"
           git pull origin main
           echo "Installing dependencies at $(date)"
