@@ -9,14 +9,26 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: Pull latest code from Git
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy to VPS
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+      run: |
+        # SSH kalitini vaqtinchalik faylga yozish
+        echo "$SSH_PRIVATE_KEY" > ssh_key
+        chmod 600 ssh_key
+
+        # VPS ga ulanish va buyruqlarni bajarish
+        ssh -o StrictHostKeyChecking=no -i ssh_key $SSH_USER@$SSH_HOST << 'EOF'
           cd ~/library/library_project
           git pull origin main
           npm install
           pm2 restart library
+        EOF
+
+        # Vaqtinchalik kalit faylini o‘chirish
+        rm ssh_key
