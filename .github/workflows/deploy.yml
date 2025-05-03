@@ -13,16 +13,41 @@ jobs:
     - name: Install dependencies & restart app
       run: |
         echo "🚀 Deployment started at $(date)"
-        cd /home/githubrunner/actions-runner/_work/library_project/library_project
         
-        # Fix permissions and clean existing modules
-        sudo chown -R $USER:$USER .
-        rm -rf node_modules
+        # Debug info
+        echo "=== SYSTEM INFO ==="
+        node -v
+        npm -v
+        pm2 -v
+        echo "=================="
         
-        # Install with unsafe permissions flag
-        npm install --unsafe-perm
+        # Project directory
+        TARGET_DIR="/home/githubrunner/actions-runner/_work/library_project/library_project"
+        echo "Target directory: $TARGET_DIR"
         
-        # Restart PM2 process
-        pm2 restart library || pm2 start index.js --name library
+        if [ ! -d "$TARGET_DIR" ]; then
+          echo "❌ Papka topilmadi: $TARGET_DIR"
+          exit 1
+        fi
+        
+        cd "$TARGET_DIR" || exit 1
+        
+        # Cleanup
+        echo "🧹 Eski fayllarni tozalash..."
+        sudo rm -rf node_modules package-lock.json .npmrc
+        
+        # Install with debug
+        echo "📦 Paketlarni o'rnatish..."
+        npm install --loglevel verbose --unsafe-perm 2>&1 | tee npm-debug.log
+        
+        # PM2 process
+        echo "🔄 PM2 ni qayta ishga tushirish..."
+        pm2 delete library || true
+        pm2 start index.js --name library
         
         echo "✅ Deployment finished at $(date)"
+        
+        # Debug log
+        echo "=== INSTALLATION LOG ==="
+        cat npm-debug.log | tail -n 20
+        echo "======================="
