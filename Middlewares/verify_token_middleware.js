@@ -24,7 +24,7 @@ function verifyAccessToken(req, res, next) {
 
 function getNewAccessTokenUsingRefreshToken(req, res, next) {
   try {
-    const { refreshtoken } = req.body; // Refresh token endi body orqali keladi
+    const { refreshtoken } = req.cookies.refreshtoken || req.body; // Refresh token endi body orqali keladi
     if (!refreshtoken) {
       return next(BaseError.BadRequest(404, "Refresh token topilmadi!"));
     }

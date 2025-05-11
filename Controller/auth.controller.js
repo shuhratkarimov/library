@@ -297,6 +297,10 @@ async function login(req, res, next) {
         httpOnly: true,
         maxAge: 15 * 60 * 1000,
       });
+      res.cookie("refreshtoken", refreshtoken, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
       
       // Refresh tokenni localStorage-ga yozish uchun frontendga jo'natish
       res.status(200).json({
