@@ -28,7 +28,6 @@ function getNewAccessTokenUsingRefreshToken(req, res, next) {
     if (!refreshtoken) {
       return next(BaseError.BadRequest(404, "Refresh token topilmadi!"));
     }
-    k
     const decoded = jwt.verify(refreshtoken, process.env.REFRESH_SECRET_KEY);
     const payload = {
       username: decoded.username,
