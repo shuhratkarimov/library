@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 });
 app.use(helmet());
 app.use(rateLimit({ windowMs: 10 * 1000, max: 4 }));
-app.enableCors({
+const corsOptions = {
   origin: [
     `http://localhost:${PORT}`,
     `http://172.30.64.1:${PORT}`,
@@ -50,7 +50,8 @@ app.enableCors({
     `http://51.159.225.188:${PORT}`,
   ],
   credentials: true,
-});
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true }));
