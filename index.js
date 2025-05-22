@@ -18,8 +18,8 @@ const logger = require("./service/logger");
 const { stringify } = require("querystring");
 const app = express();
 connectDB();
-const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
+// const helmet = require("helmet");
+// const rateLimit = require("express-rate-limit");
 app.use((req, res, next) => {
   const start = Date.now();
   res.on("finish", () => {
