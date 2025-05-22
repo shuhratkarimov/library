@@ -1,0 +1,59 @@
+{
+  message: '{\n' +
+    '    "method": "GET",\n' +
+    '    "url": "/get_all_books",\n' +
+    '    "status": 404,\n' +
+    '    "duration": "11ms",\n' +
+    '    "requestBody": {},\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "vary": "Origin",\n' +
+    '        "access-control-allow-credentials": "true",\n' +
+    `        "content-security-policy": "default-src 'none'",\n` +
+    '        "x-content-type-options": "nosniff",\n' +
+    '        "content-type": "text/html; charset=utf-8",\n' +
+    '        "content-length": 152\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-22 14:28:51'
+}
+{
+  message: '{\n' +
+    '    "method": "GET",\n' +
+    '    "url": "/get_books",\n' +
+    '    "status": 200,\n' +
+    '    "duration": "334ms",\n' +
+    '    "requestBody": {},\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "vary": "Origin",\n' +
+    '        "access-control-allow-credentials": "true",\n' +
+    '        "content-type": "application/json; charset=utf-8",\n' +
+    '        "content-length": "11775",\n' +
+    '        "etag": "W/\\"2dff-27W9HIAcSHdeqDzFdPO33W4PMKo\\""\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-22 14:29:07'
+}
+{
+  message: '{\n' +
+    '    "method": "GET",\n' +
+    '    "url": "/favicon.ico",\n' +
+    '    "status": 404,\n' +
+    '    "duration": "1ms",\n' +
+    '    "requestBody": {},\n' +
+    '    "responseHeaders": {\n' +
+    '        "x-powered-by": "Express",\n' +
+    '        "vary": "Origin",\n' +
+    '        "access-control-allow-credentials": "true",\n' +
+    `        "content-security-policy": "default-src 'none'",\n` +
+    '        "x-content-type-options": "nosniff",\n' +
+    '        "content-type": "text/html; charset=utf-8",\n' +
+    '        "content-length": 150\n' +
+    '    }\n' +
+    '}',
+  level: 'info',
+  timestamp: '2025-05-22 14:29:07'
+}

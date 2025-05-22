@@ -1,0 +1,800 @@
+openapi: 3.0.0
+info:
+  title: Online Library Management API
+  version: 1.0.0
+  description: API for user authentication, managing books, authors and members of the library.
+servers:
+  - url: https://library-1dmu.onrender.com
+    description: Production server
+tags:
+  - name: Authentication
+    description: Endpoints related to user authentication
+  - name: Books
+    description: Endpoints related to books
+  - name: Authors
+    description: Endpoints related to authors
+  - name: Comments
+    description: Endpoints related to comments
+  - name: Members
+    description: Endpoints related to members
+paths:
+  /register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      requestBody:
+        description: "User registration data"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        '201':
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterResponse"
+        '403':
+          description: User already registered
+        '500':
+          description: Server error
+  /verify:
+    post:
+      tags:
+        - Authentication
+      summary: Verify user's email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: shuhratkarimov.dev@gmail.com
+                code:
+                  type: number
+                  example: 11111
+      responses:
+        '200':
+          description: Email verification successful
+        '401':
+          description: Verification code invalid or expired
+        '404':
+          description: User not found
+  /resend_verification_code:
+    post:
+      tags:
+        - Authentication
+      summary: Resend email verification code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: shuhratkarimov.dev@gmail.com
+      responses:
+        '200':
+          description: Verification code resent successfully
+        '404':
+          description: User not found or already verified
+        '500':
+          description: Server error
+  /get_forgot_password_code:
+    post:
+      tags:
+        - Authentication
+      summary: Request password recovery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: shuhratkarimov.dev@gmail.com
+      responses:
+        '200':
+          description: Password recovery code sent
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+  /verify_forgot_password_code:
+    post:
+      tags:
+        - Authentication
+      summary: Verify password recovery code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: shuhratkarimov.dev@gmail.com
+                code:
+                  type: number
+                  example: 123456
+      responses:
+        '200':
+          description: Recovery code verified
+        '401':
+          description: Invalid or expired recovery code
+        '404':
+          description: User not found
+  /resend_recover_password_code:
+    post:
+      tags:
+        - Authentication
+      summary: Resend password recovery code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: shuhratkarimov.dev@gmail.com
+      responses:
+        '200':
+          description: Recovery code resent successfully
+        '404':
+          description: User not found
+        '429':
+          description: Too many attempts; try later
+        '500':
+          description: Server error
+  /add_new_password:
+    post:
+      tags:
+        - Authentication
+      summary: Add a new password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: shuhratkarimov.dev@gmail.com
+                newPassword:
+                  type: string
+                  example: NewP@ssw0rd
+      responses:
+        '200':
+          description: Password updated successfully
+        '403':
+          description: New password is too short
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: shuhratkarimov.dev@gmail.com
+                password:
+                  type: string
+                  example: P@ssw0rd
+      responses:
+        '200':
+          description: Login successful
+        '401':
+          description: Invalid credentials
+        '500':
+          description: Server error
+  /logout:
+    post:
+      tags:
+        - Authentication
+      summary: User logout
+      responses:
+        '200':
+          description: Logout successful
+        '500':
+          description: Server error
+  /refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Generate a new access token using the refresh token from cookies
+      requestBody:
+        required: false
+        content: {}
+      responses:
+        '200':
+          description: Successfully generated a new access token
+        '400':
+          description: Refresh token not found in cookies
+        '500':
+          description: Server error          
+  /delete_auth_DB_collection:
+    delete:
+      tags:
+        - Authentication
+      summary: Delete all authentication data from the database
+      requestBody:
+        required: false
+        content: {}
+      responses:
+        '200':
+          description: Authentication-related database collection cleared
+        '500':
+          description: Failed to clean DB collection          
+  /get_books:
+    get:
+      summary: Get all books
+      tags:
+        - Books
+      responses:
+        200:
+          description: List of all books
+  /add_book:
+    post:
+      summary: Create a new book
+      tags:
+        - Books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                pages:
+                  type: integer
+                year:
+                  type: integer
+                price:
+                  type: number
+                country:
+                  type: string
+                author:
+                  type: string
+                description:
+                  type: string
+              required:
+                - title
+                - pages
+                - year
+                - price
+                - country
+                - author
+                - description
+      security:
+        - bearerAuth: []
+      responses:
+        201:
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  book:
+                    $ref: '#/components/schemas/Book'                
+  /get_one_book/{id}:
+    get:
+      summary: Get book by ID
+      tags:
+        - Books
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the book to retrieve
+      responses:
+        200:
+          description: Book details
+        404:
+          description: Book not found
+  /search_books:
+    get:
+      summary: Search for books by title
+      tags:
+        - Books
+      parameters:
+        - in: query
+          name: title
+          required: true
+          schema:
+            type: string
+          description: The title of the book to search for (supports partial matching, case-insensitive)
+      responses:
+        200:
+          description: A list of books matching the title search criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+        404:
+          description: No books found matching the title search criteria
+        400:
+          description: Bad request (e.g., missing or invalid query parameters)
+  /update_book/{id}:
+    put:
+      summary: Update book by ID
+      tags:
+        - Books
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the book to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                pages:
+                  type: integer
+                year:
+                  type: integer
+                price:
+                  type: number
+                country:
+                  type: string
+                author:
+                  type: string
+                description:
+                  type: string
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Book updated successfully
+        400:
+          description: Bad request
+        404:
+          description: Book not found
+  /delete_book/{id}:
+    delete:
+      summary: Delete book by ID
+      tags:
+        - Books
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the book to delete
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Book deleted successfully
+        404:
+          description: Book not found
+  /get_authors:
+    get:
+      summary: Get all authors
+      tags:
+        - Authors
+      responses:
+        200:
+          description: List of all authors
+  /add_author:
+    post:
+      summary: Add a new author
+      tags:
+        - Authors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                dateOfBirth:
+                  type: string
+                  format: date
+                dateOfDeath:
+                  type: string
+                  format: date
+                country:
+                  type: string
+                bio:
+                  type: string    
+              required:
+                - full_name
+                - dateOfBirth
+                - country
+                - bio
+      security:
+        - bearerAuth: []
+      responses:
+        201:
+          description: Author added successfully
+        400:
+          description: Bad request
+  /search_authors:
+    get:
+      summary: Search authors by name
+      tags:
+        - Authors
+      parameters:
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+          description: The name of the author to search for (supports partial matching, case-insensitive)
+      responses:
+        200:
+          description: A group of authors matching the name
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+        404:
+          description: No author found by this name
+        400:
+          description: Bad request (e.g., missing or invalid query parameters)     
+  /get_one_author/{id}:
+    get:
+      summary: Get author by ID
+      tags:
+        - Authors
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the author to retrieve
+      responses:
+        200:
+          description: Author details
+        404:
+          description: Author not found
+  /update_author/{id}:
+    put:
+      summary: Update author by ID
+      tags:
+        - Authors
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the author to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                dateOfBirth:
+                  type: string
+                  format: date
+                dateOfDeath:
+                  type: string
+                  format: date
+                country:
+                  type: string
+                bio:
+                  type: string                  
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Author updated successfully
+        400:
+          description: Bad request
+        404:
+          description: Author not found
+  /delete_author/{id}:
+    delete:
+      summary: Delete author by ID
+      tags:
+        - Authors
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the author to delete
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Author deleted successfully
+        404:
+          description: Author not found 
+  /upload/{modelType}/{id}:
+    post:
+      summary: Foydalanuvchi yoki kitob uchun rasm yuklash
+      description: Ushbu endpoint foydalanuvchi yoki kitob uchun rasm yuklash va ularning ma'lumotlar bazasidagi img maydonini yangilash uchun ishlatiladi.
+      parameters:
+        - name: modelType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [book, author]
+          description: Model turi (book yoki author bo'lishi mumkin)
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Modelning noyob identifikatori
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UploadImageRequest"
+      responses:
+        '201':
+          description: Rasm muvaffaqiyatli yuklandi
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadImageResponse"
+        '400':
+          description: Xatolik yuz berdi (masalan, fayl yuklanmagan yoki noto‘g‘ri model turi kiritilgan)
+        '404':
+          description: Ko‘rsatilgan ID bo‘yicha ma'lumot topilmadi
+        '500':
+          description: Server xatosi
+  /get_comments:
+    get:
+      summary: Get all comments
+      tags:
+        - Comments
+      responses:
+        200:
+          description: List of all comments
+  /add_comment:
+    post:
+      summary: Add a new comment
+      tags:
+        - Comments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                member_info:
+                  type: string
+                book_info:
+                  type: string
+                comment:
+                  type: string
+              required:
+                - member_info
+                - book_info
+                - comment
+      responses:
+        201:
+          description: Comment added successfully
+        400:
+          description: Bad request
+  /get_members:
+    get:
+      summary: Get all members
+      tags:
+        - Members
+      responses:
+        200:
+          description: List of all members
+  /add_member:
+    post:
+      summary: Add a new member
+      tags:
+        - Members
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                memberName:
+                  type: string
+                age:
+                  type: integer
+              required:
+                - memberName
+                - age
+      responses:
+        201:
+          description: Member added successfully
+        400:
+          description: Bad request
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: shuhrat
+        email:
+          type: string
+          example: shuhratkarimov.dev@gmail.com
+        password:
+          type: string
+          example: "11111"
+    RegisterResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "User registered successfully"
+        userId:
+          type: string
+          example: "64b5e5d9f0a4b5c9a7e1c2d3"
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the book
+        title:
+          type: string
+        author:
+          type: string
+        year:
+          type: integer
+        price:
+          type: number
+        country:
+          type: string
+        description:
+          type: string
+      required:
+        - title
+        - author
+        - year
+        - price
+        - country
+        - description
+    Author:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the author
+        full_name:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        dateOfDeath:
+          type: string
+          format: date
+        country:
+          type: string
+        bio:
+          type: string
+      required:
+        - full_name
+        - dateOfBirth
+        - country
+        - bio
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: integer
+          description: HTTP status code of the error
+        errors:
+          type: array
+          items:
+            type: string
+          description: List of error details
+      required:
+        - message
+        - code
+    Member:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the member
+        memberName:
+          type: string
+        age:
+          type: integer
+      required:
+        - memberName
+        - age
+    UploadImageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Rasm muvaffaqiyatli yuklandi"
+        image:
+          type: string
+          example: "http://localhost:5000/uploads/1706791234567.png"        
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the comment
+        member_info:
+          type: string
+        book_info:
+          type: string
+        comment:
+          type: string
+      required:
+        - member_info
+        - book_info
+        - comment
+    UploadImageRequest:
+      type: object
+      properties:
+        picture:
+          type: string
+          format: binary
+          description: Yuklanayotgan fayl (rasm)                
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+
+
