@@ -297,7 +297,11 @@ async function login(req, res, next) {
         httpOnly: true,
         maxAge: 15 * 60 * 1000,
       });
-      
+
+      res.cookie("refreshtoken", refreshtoken, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
       // Refresh tokenni localStorage-ga yozish uchun frontendga jo'natish
       res.status(200).json({
         message: "Tizimga kirish muvaffaqiyatli amalga oshirildi!",
@@ -315,7 +319,7 @@ async function login(req, res, next) {
 
 function logout(req, res, next) {
   try {
-    const refreshToken = req.body.refreshtoken; // Frontend refresh tokenni yuboradi
+    const refreshToken = req.cookies.refreshtoken;
     if (!refreshToken) {
       return res.status(400).json({ message: "Refresh token topilmadi!" });
     }

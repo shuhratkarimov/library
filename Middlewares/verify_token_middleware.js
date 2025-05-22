@@ -24,11 +24,10 @@ function verifyAccessToken(req, res, next) {
 
 function getNewAccessTokenUsingRefreshToken(req, res, next) {
   try {
-    const { refreshtoken } = req.body; // Refresh token endi body orqali keladi
+    const { refreshtoken } = req.cookies
     if (!refreshtoken) {
       return next(BaseError.BadRequest(404, "Refresh token topilmadi!"));
     }
-    k
     const decoded = jwt.verify(refreshtoken, process.env.REFRESH_SECRET_KEY);
     const payload = {
       username: decoded.username,
