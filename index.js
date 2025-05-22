@@ -42,16 +42,16 @@ app.use((req, res, next) => {
 });
 app.use(helmet());
 app.use(rateLimit({ windowMs: 10 * 1000, max: 4 }));
-const corsOptions = {
-  origin: [
-    `http://localhost:${PORT}`,
-    `http://172.30.64.1:${PORT}`,
-    `http://192.168.100.18:${PORT}`,
-    `http://51.159.225.188:${PORT}`,
-  ],
-  credentials: true,
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: [
+//     `http://localhost:${PORT}`,
+//     `http://172.30.64.1:${PORT}`,
+//     `http://192.168.100.18:${PORT}`,
+//     `http://51.159.225.188:${PORT}`,
+//   ],
+//   credentials: true,
+// };
+app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true }));
