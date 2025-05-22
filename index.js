@@ -15,33 +15,33 @@ const CommentsRouter = require("./Router/comments.routes");
 const membersRouter = require("./Router/members.routes");
 const LogsRouter = require("./Router/logs.routes");
 const logger = require("./service/logger");
-const { stringify } = require("querystring");
+// const { stringify } = require("querystring");
 const app = express();
 connectDB();
 // const helmet = require("helmet");
 // const rateLimit = require("express-rate-limit");
-app.use((req, res, next) => {
-  const start = Date.now();
-  res.on("finish", () => {
-    try {
-      const duration = Date.now() - start;
-      const logData = {
-        method: req.method,
-        url: req.url,
-        status: res.statusCode,
-        duration: `${duration}ms`,
-        requestBody: req.body,
-        responseHeaders: res.getHeaders(),
-      };
-      logger.info(JSON.stringify(logData, null, 4));
-    } catch (error) {
-      console.error("Log yozishda xatolik:", error);
-    }
-  });
-  next();
-});
-app.use(helmet());
-app.use(rateLimit({ windowMs: 10 * 1000, max: 4 }));
+// app.use((req, res, next) => {
+//   const start = Date.now();
+//   res.on("finish", () => {
+//     try {
+//       const duration = Date.now() - start;
+//       const logData = {
+//         method: req.method,
+//         url: req.url,
+//         status: res.statusCode,
+//         duration: `${duration}ms`,
+//         requestBody: req.body,
+//         responseHeaders: res.getHeaders(),
+//       };
+//       // logger.info(JSON.stringify(logData, null, 4));
+//     } catch (error) {
+//       console.error("Log yozishda xatolik:", error);
+//     }
+//   });
+//   next();
+// });
+// app.use(helmet());
+// app.use(rateLimit({ windowMs: 10 * 1000, max: 4 }));
 // const corsOptions = {
 //   origin: [
 //     `http://localhost:${PORT}`,
@@ -61,7 +61,7 @@ const YAML = require("yamljs");
 const swaggerDocument = YAML.load("./docs/swagger.yaml");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get("/", (req, res) => {
-  res.send("API ishlayapti!");
+  res.send("Server ishlayapti!");
 });
 const serverUrl = "https://library-1dmu.onrender.com";
 swaggerDocument.servers = [{ url: serverUrl, description: "Current Server" }];
