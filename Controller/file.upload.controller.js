@@ -40,7 +40,8 @@ async function fileUploader(req, res, next) {
     else if (modelType === "author") model = AuthorsModel;
     else if (modelType === "user") model = userModel;
     else return next(BaseError.BadRequest(400, "Noto‘g‘ri model turi!"));
-
+      console.log(model, id);
+      
     const updatedItem = await model.findByIdAndUpdate(id, { img: publicUrl.publicUrl }, { new: true });
     if (!updatedItem) return res.status(404).json({ message: "Ma'lumot topilmadi!" });
 
