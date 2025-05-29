@@ -21,10 +21,11 @@ async function addToShell(req, res, next) {
     if (!foundUser) {
         return next(BaseError.BadRequest(403, "User not found!"))
     }
-    const foundBook = await BooksModel.findOne({ _id: req.params.bookId });
+    
+    const foundBook = await BooksModel.findById(req.params.bookId);
     if (foundUser) {
       if (foundBook) {
-        await ShelfModel.create({ bookId, userId });
+        await ShelfModel.create({ bookId:req.params.bookId, userId:foundUser._id });
         return res.status(201).json({
           message: `${foundBook.title} kitobi ${foundUser.username}ning kitob javoniga qo'shildi!`,
         });
