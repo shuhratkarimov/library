@@ -571,21 +571,21 @@ paths:
   /upload/{modelType}/{id}:
     post:
       summary: Foydalanuvchi yoki kitob uchun rasm yuklash
-      description: Ushbu endpoint foydalanuvchi yoki kitob uchun rasm yuklash va ularning ma'lumotlar bazasidagi img maydonini yangilash uchun ishlatiladi.
+      description: Ushbu endpoint foydalanuvchi yoki kitob uchun yoki user uchun rasm yuklash va ularning ma'lumotlar bazasidagi img, pdfUrl, audioUrl maydonini yangilash uchun ishlatiladi.
       parameters:
         - name: modelType
           in: path
           required: true
           schema:
             type: string
-            enum: [book, author]
-          description: Model turi (book yoki author bo'lishi mumkin)
+            enum: [book, author, user]
+          description: Model turi (book yoki author yoki user bo'lishi mumkin)
         - name: id
           in: path
           required: true
           schema:
             type: string
-          description: Modelning noyob identifikatori
+          description: Modelning id'si
       requestBody:
         required: true
         content:
@@ -843,7 +843,7 @@ components:
       properties:
         message:
           type: string
-          example: "Rasm muvaffaqiyatli yuklandi"
+          example: "Rasm/pdf/audio muvaffaqiyatli yuklandi"
         image:
           type: string
           example: "http://localhost:5000/uploads/1706791234567.png"        
@@ -882,7 +882,7 @@ components:
         picture:
           type: string
           format: binary
-          description: Yuklanayotgan fayl (rasm)                
+          description: Yuklanayotgan fayl (rasm/pdf/audio)                
   securitySchemes:
     bearerAuth:
       type: http
