@@ -879,7 +879,7 @@ components:
     UploadImageRequest:
       type: object
       properties:
-        picture:
+        file:
           type: string
           format: binary
           description: Yuklanayotgan fayl (rasm/pdf/audio)                
