@@ -3,8 +3,8 @@ const {getUserShelfBooks, addToShell, deleteUserShelfBooks} = require("../Contro
 const ShelfValidator = require("../Middlewares/shelf_validation_middleware")
 const shelfRouter = Router();
 
-shelfRouter.get("/get_user_books/:userId", getUserShelfBooks);
-shelfRouter.post("/add_to_shelf", [ShelfValidator], addToShell);
-shelfRouter.delete("/delete_from_shell/:id", deleteUserShelfBooks);
+shelfRouter.get("/get_user_books", getUserShelfBooks);
+shelfRouter.post("/add_to_shelf/:bookId", addToShell);
+shelfRouter.delete("/delete_from_shell/:bookId", deleteUserShelfBooks);
 
 module.exports = shelfRouter;

@@ -678,43 +678,39 @@ paths:
           description: Member added successfully
         400:
           description: Bad request
-  /get_user_books/:userId:
+  /get_user_books:
     get:
       summary: Get all books of user
-      parameters:
-        - in: path
-          name: userId
-          schema:
-            type: string
-          required: true
-          description: ID of the user to find
+      security:
+        - bearerAuth: []
       tags:
         - Shelf
       responses:
         200:
           description: List of all books of user shelf
-  /add_to_shelf:
+        401:
+          description: Token not found
+  /add_to_shelf/:bookId:
     post:
-      summary: Add a new book to a shelf of user
+      summary: Add book to shelf by book ID
       tags:
         - Shelf
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                userId:
-                  type: string
-                bookId:
-                  type: string
-              required:
-                - userId
-                - bookId
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+          required: true
+          description: ID of the book to add to shelf
+      security:
+        - bearerAuth: []
       responses:
-        201:
+        200:
           description: Book added to shelf successfully
+        404:
+          description: Book not found 
+        401:
+          description: Token not found       
           content:
             application/json:
               schema:
@@ -724,14 +720,16 @@ paths:
                     type: string
                   book:
                     $ref: '#/components/schemas/Book'                
-  /delete_from_shell/:id:
+  /delete_from_shell/:bookId:
     delete:
       summary: Delete book by ID from shell
+      security:
+        - bearerAuth: []
       tags:
         - Shelf
       parameters:
         - in: path
-          name: id
+          name: bookId
           schema:
             type: string
           required: true
@@ -743,6 +741,8 @@ paths:
           description: Book not found
         404:
           description: User not found
+        401:
+          description: Token not found
 components:
   schemas:
     RegisterRequest:

@@ -15,7 +15,6 @@ const userInfo = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.REFRESH_SECRET_KEY)
         const email = decoded.email
         const foundUser = await UserModel.findOne({email})
-        console.log(foundUser);
         
         if (!foundUser) {
             return next(BaseError.BadRequest(403, "User not found!"))

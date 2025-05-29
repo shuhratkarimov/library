@@ -5,27 +5,40 @@ const ShelfModel = require("../Schemas/shelf.schema");
 
 async function addToShell(req, res, next) {
   try {
-    const { bookId, userId } = req.body;
-    const founduser = await UserModel.findOne({ _id: userId });
-    const foundBook = await BooksModel.findOne({ _id: bookId });
-    if (founduser) {
+    const {refreshtoken} = req.cookies
+    if (!refreshtoken) {
+        const {refreshtoken} = req.headers
+        if (!refreshtoken) {
+            return next(BaseError.BadRequest(403, "Token not found!"))
+        }
+    }
+    const token = refreshtoken
+    const decoded = jwt.verify(token, process.env.REFRESH_SECRET_KEY)
+    const email = decoded.email
+    const foundUser = await UserModel.findOne({email})
+    
+    if (!foundUser) {
+        return next(BaseError.BadRequest(403, "User not found!"))
+    }
+    const foundBook = await BooksModel.findOne({ _id: req.params.bookId });
+    if (foundUser) {
       if (foundBook) {
         await ShelfModel.create({ bookId, userId });
         return res.status(201).json({
-          message: `${foundBook.title} kitobi ${founduser.username}ning kitob javoniga qo'shildi!`,
+          message: `${foundBook.title} kitobi ${foundUser.username}ning kitob javoniga qo'shildi!`,
         });
       }
       return next(
         BaseError.BadRequest(
           404,
-          `Kechirasiz ${founduser.username}, kutubxonamizda bunday kitob topilmadi...`
+          `Kechirasiz ${foundUser.username}, kutubxonamizda bunday kitob topilmadi...`
         )
       );
     }
     return next(
       BaseError.BadRequest(
         403,
-        `Kechirasiz, izoh qoldirish uchun avval ro'yxatdan o'tishingiz lozim!`
+        `Kechirasiz, kitobni javonga qo'shish uchun avval ro'yxatdan o'tishingiz lozim!`
       )
     );
   } catch (error) {
@@ -35,7 +48,22 @@ async function addToShell(req, res, next) {
 
 async function getUserShelfBooks(req, res, next) {
   try {
-    const foundBooks = await ShelfModel.find({userId: req.params.userId})
+    const {refreshtoken} = req.cookies
+    if (!refreshtoken) {
+        const {refreshtoken} = req.headers
+        if (!refreshtoken) {
+            return next(BaseError.BadRequest(403, "Token not found!"))
+        }
+    }
+    const token = refreshtoken
+    const decoded = jwt.verify(token, process.env.REFRESH_SECRET_KEY)
+    const email = decoded.email
+    const foundUser = await UserModel.findOne({email})
+    
+    if (!foundUser) {
+        return next(BaseError.BadRequest(403, "User not found!"))
+    }
+    const foundBooks = await ShelfModel.find({userId: foundUser._id})
       .populate("userId", ["username"])
       .populate({path: "bookId", select: "title", populate: {path: "author", select: "full_name"}});
     if (!foundBooks) {
