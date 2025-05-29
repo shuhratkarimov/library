@@ -254,6 +254,8 @@ paths:
       tags:
         - Authentication
       summary: Get user info
+      security:
+        - bearerAuth: []
       requestBody:
         required: false
         content: {}

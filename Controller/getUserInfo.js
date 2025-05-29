@@ -4,10 +4,14 @@ const jwt = require("jsonwebtoken");
 
 const userInfo = async (req, res, next) => {
     try {
-        const {refreshtoken} = req.coookies
+        const {refreshtoken} = req.cookies
         if (!refreshtoken) {
-            return next(BaseError.BadRequest(403, "Token not found!"))
+            const {refreshtoken} = req.headers
+            if (!refreshtoken) {
+                return next(BaseError.BadRequest(403, "Token not found!"))
+            }
         }
+        const token = refreshtoken
         const decoded = jwt.verify(token, process.env.REFRESH_SECRET_KEY)
         const foundUser = UserModel.findOne({email: decoded.email})
         if (!foundUser) {
