@@ -657,6 +657,71 @@ paths:
           description: Member added successfully
         400:
           description: Bad request
+  /get_user_books/:userId:
+    get:
+      summary: Get all books of user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: ID of the user to find
+      tags:
+        - Shelf
+      responses:
+        200:
+          description: List of all books of user shelf
+  /add_to_shelf:
+    post:
+      summary: Add a new book to a shelf of user
+      tags:
+        - Shelf
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                bookId:
+                  type: string
+              required:
+                - userId
+                - bookId
+      responses:
+        201:
+          description: Book added to shelf successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  book:
+                    $ref: '#/components/schemas/Book'                
+  /delete_from_shell/:id:
+    delete:
+      summary: Delete book by ID from shell
+      tags:
+        - Books
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the book to delete
+      responses:
+        200:
+          description: Book deleted successfully from shell
+        404:
+          description: Book not found
+        404:
+          description: User not found
 components:
   schemas:
     RegisterRequest:
@@ -783,6 +848,19 @@ components:
         - member_info
         - book_info
         - comment
+    Shelf:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the shelf
+        userId:
+          type: string
+        bookId:
+          type: string
+      required:
+        - userId
+        - bookId
     UploadImageRequest:
       type: object
       properties:

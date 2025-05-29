@@ -14,6 +14,7 @@ const cookie_parser = require("cookie-parser");
 const CommentsRouter = require("./Router/comments.routes");
 const membersRouter = require("./Router/members.routes");
 const LogsRouter = require("./Router/logs.routes");
+const ShelfRouter = require("./Router/shelf.routes")
 const logger = require("./service/logger");
 // const { stringify } = require("querystring");
 const app = express();
@@ -73,6 +74,7 @@ app.use(LogsRouter);
 app.use(fileUploadRouter);
 app.use(CommentsRouter);
 app.use(membersRouter);
+app.use(ShelfRouter)
 app.use(error_middleware);
 app.listen(PORT, () => {
   console.log("server is running on the port: " + PORT);
