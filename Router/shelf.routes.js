@@ -5,6 +5,6 @@ const shelfRouter = Router();
 
 shelfRouter.get("/get_user_books", getUserShelfBooks);
 shelfRouter.post("/add_to_shelf/:bookId", addToShell);
-shelfRouter.delete("/delete_from_shell/:bookId", deleteUserShelfBooks);
+shelfRouter.delete("/delete_from_shelf/:shelfId", deleteUserShelfBooks);
 
 module.exports = shelfRouter;

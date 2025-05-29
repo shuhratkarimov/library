@@ -80,11 +80,12 @@ async function getUserShelfBooks(req, res, next) {
 
 async function deleteUserShelfBooks(req, res, next) {
   try {
-    const foundBook = await ShelfModel.findById(req.params.id)
-    if (!foundBook) {
-      return next(BaseError.BadRequest(403, "Bunday kitob mavjud emas!"));
+    const {shelfId} = req.params
+    const save = await ShelfModel.findById(shelfId)
+    if (!save) {
+      return next(BaseError.BadRequest(403, "Bunday kitob saqlash yozuvi mavjud emas!"));
     }
-    res.status(201).json({message: "Kitob o'chirildi"});
+    res.status(201).json({message: "Kitob javondan olindi!"});
   } catch (error) {
     next(error);
   }
