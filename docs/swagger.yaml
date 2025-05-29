@@ -570,7 +570,11 @@ paths:
           description: Author not found 
   /upload/{modelType}/{id}:
     post:
+      security:
+        - BearerAuth: []
       summary: Foydalanuvchi yoki kitob uchun rasm yuklash
+      tags:
+        - Upload (image, audio, pdf)
       description: Ushbu endpoint foydalanuvchi yoki kitob uchun yoki user uchun rasm yuklash va ularning ma'lumotlar bazasidagi img, pdfUrl, audioUrl maydonini yangilash uchun ishlatiladi.
       parameters:
         - name: modelType
@@ -601,6 +605,8 @@ paths:
                 $ref: "#/components/schemas/UploadImageResponse"
         '400':
           description: Xatolik yuz berdi (masalan, fayl yuklanmagan yoki noto‘g‘ri model turi kiritilgan)
+        '401':
+          description: Token topilmadi, iltimos login qiling
         '404':
           description: Ko‘rsatilgan ID bo‘yicha ma'lumot topilmadi
         '500':
