@@ -56,6 +56,14 @@ const booksSchema = new Schema(
     img: {
       type: String,
       default: "Rasm yuklanmagan"
+    },
+    pdfUrl:{
+      type: String,
+      default: "Pdf kitob linki yuklanmagan"
+    },
+    audioUrl:{
+      type: String,
+      default: "Audio kitob linki yuklanmagan"
     }
   },
   { versionKey: false }

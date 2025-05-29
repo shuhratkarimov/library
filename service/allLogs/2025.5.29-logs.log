@@ -8,3 +8,13 @@
   level: 'info',
   timestamp: '2025-05-29 08:23:14'
 }
+{
+  message: 'shuhratkarimov.dev@gmail.com email egasi login qilishga urindi!',
+  level: 'info',
+  timestamp: '2025-05-29 08:50:00'
+}
+{
+  message: 'shuhrat tizimga kirdi!',
+  level: 'info',
+  timestamp: '2025-05-29 08:50:00'
+}
