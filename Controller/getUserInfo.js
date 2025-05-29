@@ -1,6 +1,6 @@
 const UserModel = require("../Schemas/auth.schema")
 const BaseError = require("../Utils/base_error");
-const jwt = require("jsonwebtoken");
+const {verify} = require("jsonwebtoken");
 
 const userInfo = async (req, res, next) => {
     try {
@@ -12,7 +12,7 @@ const userInfo = async (req, res, next) => {
             }
         }
         const token = refreshtoken
-        const decoded = jwt.verify(token, process.env.REFRESH_SECRET_KEY)
+        const decoded = verify(token, process.env.REFRESH_SECRET_KEY)
         const email = decoded.email
         const foundUser = await UserModel.findOne({email})
         

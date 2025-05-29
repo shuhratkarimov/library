@@ -2,6 +2,7 @@ const UserModel = require("../Schemas/auth.schema");
 const BaseError = require("../Utils/base_error");
 const BooksModel = require("../Schemas/books.schema");
 const ShelfModel = require("../Schemas/shelf.schema");
+const jwt = require("jsonwebtoken")
 
 async function addToShell(req, res, next) {
   try {
