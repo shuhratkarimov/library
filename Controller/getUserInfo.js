@@ -4,8 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const userInfo = async (req, res, next) => {
     try {
-        const token = req.coookies.refreshtoken
-        if (!token) {
+        const {refreshtoken} = req.coookies
+        if (!refreshtoken) {
             return next(BaseError.BadRequest(403, "Token not found!"))
         }
         const decoded = jwt.verify(token, process.env.REFRESH_SECRET_KEY)

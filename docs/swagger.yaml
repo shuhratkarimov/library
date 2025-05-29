@@ -203,7 +203,7 @@ paths:
                   example: shuhratkarimov.dev@gmail.com
                 password:
                   type: string
-                  example: P@ssw0rd
+                  example: 11111
       responses:
         '200':
           description: Login successful
