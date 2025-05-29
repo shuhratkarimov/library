@@ -28,7 +28,7 @@ AuthRouter.post("/add_new_password", addNewPassword);
 AuthRouter.post("/resend_verification_code", resendVerificationCode);
 AuthRouter.post("/refresh", getNewAccessTokenUsingRefreshToken);
 AuthRouter.post("/logout", logout);
-AuthRouter.post("/get_user_info", userInfo);
+AuthRouter.get("/get_user_info", userInfo);
 
 AuthRouter.delete("/delete_auth_DB_collection", cleanEntireAuthCollection)
 
