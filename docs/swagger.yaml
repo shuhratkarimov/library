@@ -693,45 +693,45 @@ paths:
   /add_to_shelf/{bookId}:
     post:
       summary: Add book to shelf by book ID
-    tags:
-      - Shelf
-    parameters:
-      - in: path
-        name: bookId
-        schema:
-          type: string
-        required: true
-        description: ID of the book to add to shelf
-    security:
-      - bearerAuth: []
-    responses:
-      200:
-        description: Book added to shelf successfully
-      404:
-        description: Book not found 
-      401:
-        description: Token not found               
+      tags:
+        - Shelf
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+            required: true
+          description: ID of the book to add to shelf
+      security:
+       - bearerAuth: []
+      responses:
+        200:
+          description: Book added to shelf successfully
+        404:
+          description: Book not found 
+        401:
+          description: Token not found               
   /delete_from_shelf/{shelfId}:
     delete:
       summary: Delete book by shelf ID from shelf
-    security:
-      - bearerAuth: []
-    tags:
-      - Shelf
-    parameters:
-      - in: path
-        name: shelfId
-        schema:
-          type: string
-        required: true
-        description: ID of the book to delete
-    responses:
-      200:
-        description: Book deleted successfully from shelf
-      404:
-        description: Book or User not found
-      401:
-        description: Token not found
+      security:
+        - bearerAuth: []
+      tags:
+        - Shelf
+      parameters:
+        - in: path
+          name: shelfId
+          schema:
+            type: string
+          required: true
+          description: ID of the book to delete
+      responses:
+        200:
+          description: Book deleted successfully from shelf
+        404:
+          description: Book or User not found
+        401:
+          description: Token not found
 components:
   schemas:
     RegisterRequest:
