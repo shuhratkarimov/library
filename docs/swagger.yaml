@@ -594,7 +594,7 @@ paths:
               $ref: "#/components/schemas/UploadImageRequest"
       responses:
         '201':
-          description: Rasm muvaffaqiyatli yuklandi
+          description: Fayl muvaffaqiyatli yuklandi
           content:
             application/json:
               schema:
@@ -722,7 +722,7 @@ paths:
     delete:
       summary: Delete book by ID from shell
       tags:
-        - Books
+        - Shelf
       parameters:
         - in: path
           name: id
