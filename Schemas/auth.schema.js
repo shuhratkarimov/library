@@ -41,6 +41,10 @@ const UserSchema = new Schema(
     allowed_time: {
       type: Date,
       default: Date.now()
+    },
+    img: {
+      type: String,
+      default: "Rasm yuklanmagan"
     }
   },
   { versionKey: false }

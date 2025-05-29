@@ -248,7 +248,20 @@ paths:
         '200':
           description: Authentication-related database collection cleared
         '500':
-          description: Failed to clean DB collection          
+          description: Failed to clean DB collection
+  /get_user_info:
+    delete:
+      tags:
+        - Authentication
+      summary: Get user info
+      requestBody:
+        required: false
+        content: {}
+      responses:
+        '200':
+          description: User info got successfully
+        '500':
+          description: Failed to get user info             
   /get_books:
     get:
       summary: Get all books

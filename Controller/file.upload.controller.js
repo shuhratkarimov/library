@@ -5,6 +5,7 @@ const BaseError = require("../Utils/base_error");
 const supabase = require("../Utils/supabase");
 
 const multer = require("multer");
+const userModel = require("../Schemas/auth.schema");
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -37,6 +38,7 @@ async function fileUploader(req, res, next) {
 
     if (modelType === "book") model = BooksModel;
     else if (modelType === "author") model = AuthorsModel;
+    else if (modelType === "user") model = userModel;
     else return next(BaseError.BadRequest(400, "Noto‘g‘ri model turi!"));
 
     const updatedItem = await model.findByIdAndUpdate(id, { img: publicUrl.publicUrl }, { new: true });

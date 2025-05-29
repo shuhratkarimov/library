@@ -10,10 +10,10 @@ const {
   resendRecoverForgotPasswordCode,
   addNewPassword,
 } = require("../Controller/auth.controller");
+const userInfo = require("../Controller/getUserInfo.js")
 const AuthValidator = require("../Middlewares/auth_validation_middleware.js");
 const {
   getNewAccessTokenUsingRefreshToken,
-  verifyAccessToken,
 } = require("../Middlewares/verify_token_middleware.js");
 const cleanEntireAuthCollection = require("../Utils/cleaner_auth_collection.js");
 const AuthRouter = Router();
@@ -28,6 +28,7 @@ AuthRouter.post("/add_new_password", addNewPassword);
 AuthRouter.post("/resend_verification_code", resendVerificationCode);
 AuthRouter.post("/refresh", getNewAccessTokenUsingRefreshToken);
 AuthRouter.post("/logout", logout);
+AuthRouter.post("/get_user_info", userInfo);
 
 AuthRouter.delete("/delete_auth_DB_collection", cleanEntireAuthCollection)
 
