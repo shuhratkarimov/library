@@ -30,9 +30,9 @@ async function register(req, res, next) {
         )
       );
     }
-    const randomCode = Number(
-      Array.from({ length: 6 }, () => Math.floor(Math.random() * 10)).join("")
-    );
+    const digits = Array.from({ length: 6 }, () => Math.floor(Math.random() * 9) + 1);
+    const numberStr = digits.join('');
+    const randomCode = Number(numberStr);
     await sendVerificationEmail(username, email, randomCode);
     logger.info(`${email} email manziliga tasdiqlash kodi yuborildi!`);
     const encodedPassword = await bcryptjs.hash(password, 12);
@@ -106,9 +106,9 @@ async function resendVerificationCode(req, res, next) {
         )
       );
     }
-    const randomCode = Number(
-      Array.from({ length: 6 }, () => Math.floor(Math.random() * 10)).join("")
-    );
+    const digits = Array.from({ length: 6 }, () => Math.floor(Math.random() * 9) + 1);
+    const numberStr = digits.join('');
+    const randomCode = Number(numberStr);
     await sendVerificationEmail(foundUser.username, email, randomCode);
     foundUser.verification_code = randomCode;
     foundUser.timestamp = Date.now() + 2000 * 60;
@@ -137,9 +137,9 @@ async function forgotPassword(req, res, next) {
         )
       );
     }
-    const randomCode = Number(
-      Array.from({ length: 7 }, () => Math.floor(Math.random() * 10)).join("")
-    );
+    const digits = Array.from({ length: 6 }, () => Math.floor(Math.random() * 9) + 1);
+    const numberStr = digits.join('');
+    const randomCode = Number(numberStr);
     await sendForgotPasswordEmail(foundUser.username, email, randomCode);
     foundUser.timestamp = Date.now() + 2000 * 60;
     foundUser.password_recover_code = randomCode;
@@ -205,9 +205,9 @@ async function resendRecoverForgotPasswordCode(req, res, next) {
         )
       );
     }
-    const randomCode = Number(
-      Array.from({ length: 7 }, () => Math.floor(Math.random() * 10)).join("")
-    );
+    const digits = Array.from({ length: 6 }, () => Math.floor(Math.random() * 9) + 1);
+    const numberStr = digits.join('');
+    const randomCode = Number(numberStr);
     foundUser.password_recover_code = randomCode;
     foundUser.timestamp = Date.now() + 2000 * 60;
     foundUser.attempts = 0; 
