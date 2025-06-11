@@ -295,7 +295,7 @@ async function login(req, res, next) {
     if (foundUser.isVerified === true) {
       res.cookie("accesstoken", accesstoken, {
         httpOnly: true,
-        maxAge: 15 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000,
       });
 
       res.cookie("refreshtoken", refreshtoken, {
